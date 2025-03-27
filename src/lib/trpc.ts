@@ -1,5 +1,5 @@
+import type { AppRouter as WorkerAppRouter } from '@server/src/router';
 import { createTRPCContext } from '@trpc/tanstack-react-query';
-import type { AppRouter as WorkerAppRouter } from '@worker/src/router';
 
 export const { TRPCProvider, useTRPC, useTRPCClient } =
   createTRPCContext<WorkerAppRouter>();

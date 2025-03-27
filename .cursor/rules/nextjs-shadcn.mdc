@@ -22,14 +22,17 @@ alwaysApply: false
 
 ## 项目目录
 ```
-src/ nextjs src根目录
-├── app/                # Next.js 应用的核心路由和页面
+src/                    # Next.js 应用的源代码目录
+├── app/                # Next.js App Router 路由和页面
 │                       # - 每个路由对应一个文件夹，文件夹名使用小写字母和短横线
 │                       # - 默认页面文件命名为 `page.tsx`
 │                       # - 使用 `layout.tsx` 定义布局，`loading.tsx` 定义加载状态，`error.tsx` 定义错误边界
 │                       # - 优先使用 React 服务器组件（RSC）
 │   ├── (auth)/        # 认证相关路由组
 │   ├── (dashboard)/   # 仪表盘相关路由组
+│   └── api/           # API 路由处理
+│       └── trpc/      # tRPC 路由配置
+│           └── [trpc]/ # tRPC HTTP 处理
 │
 ├── components/         # 可重用的 UI 组件
 │                       # - 组件文件夹名使用小写字母和短横线
@@ -53,6 +56,10 @@ src/ nextjs src根目录
 │                       # - 文件按功能分类（如 `auth.ts`, `api.ts`, `utils.ts`）
 │                       # - 每个工具函数应包含 JSDoc 注释
 │                       # - 使用 `export` 导出函数和常量
+│   ├── trpc/          # tRPC 服务器配置
+│   │   ├── root.ts    # tRPC 根路由
+│   │   ├── context.ts # tRPC 上下文
+│   │   └── router/    # tRPC 子路由
 │   └── utils/         # 通用工具函数
 │
 ├── providers/          # React Context Providers
@@ -67,33 +74,15 @@ src/ nextjs src根目录
 │                       # - 使用 CSS 变量定义主题颜色和间距
 │                       # - 优先使用 Tailwind CSS 或 CSS Modules
 │
-├── public/             # 静态资源（如图片、字体、图标）
-│                       # - 图片文件使用 WebP 格式，并包含尺寸信息
-│                       # - 使用 `next/image` 组件优化图片加载
-│                       # - 字体文件按类型分类
-│
 ├── types/              # 全局类型定义
 │                       # - 文件按功能分类（如 `user.ts`, `api.ts`）
 │                       # - 使用 `interface` 或 `type` 定义类型
 │                       # - 使用 `export` 导出类型
-│   ├── trpc.ts       # tRPC 相关类型
-│   └── [feature].ts  # 按功能分组的类型定义
+│   ├── trpc.ts        # tRPC 相关类型
+│   └── [feature].ts   # 按功能分组的类型定义
 │
-├── tests/              # 单元测试和集成测试
-│                       # - 测试文件命名为 `<组件或功能>.test.tsx`
-│                       # - 使用 Jest 和 React Testing Library 编写测试
-│                       # - 测试覆盖率应至少达到 80%
-│
-├── docs/               # 项目文档
-│                       # - 使用 Markdown 文件编写文档
-│                       # - 包括 `README.md`、`CONTRIBUTING.md` 和 `CHANGELOG.md`
-│                       # - 使用 JSDoc 为代码生成文档
-│
-└── scripts/            # 自动化脚本（如构建、部署、代码生成）
-                        # - 脚本文件命名为 `<功能>.sh` 或 `<功能>.js`
-                        # - 为脚本添加注释，描述其用途和参数
 └── utils/             # 通用工具函数
-    └── trpc.ts       # tRPC 客户端工具
+    └── trpc.ts        # tRPC 客户端工具
 ```
 
 ## 依赖管理
@@ -110,9 +99,10 @@ src/ nextjs src根目录
   <Icon icon="mdi-light:alert" />
   ```
 
-## 状态管理
+## 状态管理与数据获取
 - 采用 `Zustand` 进行全局状态管理。
-- 使用 `trpc TanStack React Query` 进行数据获取。
+- 使用 `tRPC` 集成的 `TanStack Query` 进行数据获取。
+- 优先使用 tRPC 进行类型安全的 API 调用。
 
 ## 安全性与性能优化
 - 使用 `Zod` 进行数据验证。
@@ -121,10 +111,16 @@ src/ nextjs src根目录
 - 图片优化：使用 WebP 格式，采用 `next/image`。
 - 静态资源加载时使用 `upstash` 作为占位符。
 
+## tRPC 最佳实践
+- 在 `lib/trpc` 中集中管理所有 tRPC 路由和中间件。
+- 使用 Zod 进行输入验证。
+- 利用 tRPC 的类型推断功能，确保端到端类型安全。
+- 在客户端组件中使用 tRPC hooks 进行数据获取。
+
 ## 测试与文档
 - 使用 `Jest` 和 `React Testing Library` 进行测试，测试覆盖率不低于 80%。
 - 采用 `JSDoc` 编写代码文档，增强 IDE 代码提示。
-- 所有文档存放于 `docs/` 目录，编写 `README.md` 和 `CHANGELOG.md`。
+- 所有文档存放于项目根目录的 `README.md`。
 
 ## 方法论
 1. **系统 2 思维**：深入分析问题，分解需求，谨慎决策。
