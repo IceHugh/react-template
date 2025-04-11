@@ -1,5 +1,4 @@
-'use client';
-
+import { useTranslation } from 'react-i18next';
 import { IconButton } from '@/components/common/button/IconButton';
 import {
   Command,
@@ -12,36 +11,33 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { CheckIcon, LanguagesIcon } from 'lucide-react';
-import { useState } from 'react';
 
-interface Locale {
-  code: string;
-  name: string;
-}
+import { CheckIcon } from 'lucide-react';
+import { useTransition } from 'react';
 
-const locales: Locale[] = [
+const locales = [
   { code: 'en', name: 'English' },
   { code: 'zh', name: '中文' },
-];
+] as const;
 
 export const LanguageSwitcher = () => {
-  const [locale, setLocale] = useState<'en' | 'zh'>('en');
-
-  const toggleLocale = (value: 'en' | 'zh') => {
-    setLocale(value);
-    document.body.classList.toggle('locale-en', value === 'en');
-    document.body.classList.toggle('locale-zh', value === 'zh');
-  };
-
+  const [isPending, startTransition] = useTransition();
+  const { i18n } = useTranslation();
   const handleChange = (value: 'en' | 'zh') => {
-    toggleLocale(value);
+    const locale = value;
+    startTransition(() => {
+      i18n.changeLanguage(locale);
+    });
   };
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <IconButton icon="prime:language" />
+        <IconButton
+          icon="prime:language"
+          variant={isPending ? 'ghost' : 'outline'}
+          label="Switch language"
+        />
       </PopoverTrigger>
       <PopoverContent className="w-28 p-0">
         <Command>
@@ -52,11 +48,13 @@ export const LanguageSwitcher = () => {
                   key={lang.code}
                   value={lang.code}
                   onSelect={() => handleChange(lang.code as 'en' | 'zh')}
+                  disabled={isPending}
+                  className="cursor-pointer justify-between"
                 >
-                  {locale === lang.code && (
+                  <span>{lang.name}</span>
+                  {i18n.language === lang.code && (
                     <CheckIcon className="mr-2 h-4 w-4" />
                   )}
-                  <span>{lang.name}</span>
                 </CommandItem>
               ))}
             </CommandGroup>
