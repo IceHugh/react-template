@@ -3,7 +3,7 @@
 import Dock from '@/layouts/Dock';
 import { Calendar, CheckSquare, Clock, HomeIcon, Settings } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-
+import Header from './Header';
 interface MainLayoutProps {
   children: React.ReactNode;
 }
@@ -53,12 +53,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* 主内容区域 */}
+      <Header />
+
       <main className="pb-20 sm:pb-24">
         <div className="container mx-auto px-3 py-2 sm:p-6">{children}</div>
       </main>
 
-      {/* Dock 导航 */}
       <Dock items={navigationItems} />
     </div>
   );

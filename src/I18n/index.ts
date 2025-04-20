@@ -1,4 +1,5 @@
 import i18n from "i18next";
+import HttpBackend from 'i18next-http-backend';
 import LanguageDetector from "i18next-browser-languagedetector";
 import LocalStorageBackend from "i18next-localstorage-backend";
 import { initReactI18next } from "react-i18next";
@@ -18,7 +19,7 @@ const resources = {
 i18n
   // load translation using http -> see /public/locales
   // learn more: https://github.com/i18next/i18next-http-backend
-  // .use(HttpBackend)
+  .use(HttpBackend)
 
   // detect user language
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
@@ -32,7 +33,7 @@ i18n
 
     fallbackLng: "en",
     debug: false,
-    resources,
+    // resources,
     // ns: ['translation'],
     // defaultNS: 'translation',
     supportedLngs: ["zh", "en"],

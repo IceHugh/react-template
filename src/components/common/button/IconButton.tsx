@@ -19,6 +19,7 @@ export const IconButton = ({
   size = 'icon',
   link = '',
   onClick,
+  ...props
 }: IconButtonProps) => {
   const ButtonContent = () => (
     <>
@@ -29,7 +30,7 @@ export const IconButton = ({
 
   if (link) {
     return (
-      <Button asChild variant={variant} size={size}>
+      <Button asChild variant={variant} size={size} {...props}>
         <Link href={link} aria-label={label || 'icon button'}>
           <ButtonContent />
         </Link>
@@ -43,6 +44,7 @@ export const IconButton = ({
       size={size}
       aria-label={label || 'icon button'}
       onClick={onClick}
+      {...props}
     >
       <ButtonContent />
     </Button>
