@@ -1,3 +1,3 @@
 export interface Env {
-  DATABASE_URL: string;
+	DATABASE_URL: string;
 }

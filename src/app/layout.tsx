@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import '@/assets/styles/globals.css';
 import { Providers } from '@/components/providers/Providers';
 import MainLayout from '@/layouts/MainLayout';
+
 type Props = {
 	children: ReactNode;
 };

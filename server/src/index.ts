@@ -18,13 +18,13 @@ import { appRouter } from './router';
 import type { Env } from './type';
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    setEnv(env);
-    return fetchRequestHandler({
-      endpoint: '/trpc',
-      req: request,
-      router: appRouter,
-      createContext,
-    });
-  },
+	async fetch(request: Request, env: Env): Promise<Response> {
+		setEnv(env);
+		return fetchRequestHandler({
+			endpoint: '/trpc',
+			req: request,
+			router: appRouter,
+			createContext,
+		});
+	},
 };
