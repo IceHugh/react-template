@@ -1,4 +1,6 @@
-import { useTranslation } from 'react-i18next';
+import { type Locale, useLocale, useTranslations } from 'next-intl';
+import { routing } from '@/i18n/routing';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { IconButton } from '@/components/common/button/IconButton';
 import {
   Command,
@@ -15,18 +17,21 @@ import {
 import { CheckIcon } from 'lucide-react';
 import { useTransition } from 'react';
 
-const locales = [
-  { code: 'en', name: 'English' },
-  { code: 'zh', name: '中文' },
-] as const;
 
 export const LanguageSwitcher = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
+
   const [isPending, startTransition] = useTransition();
-  const { i18n } = useTranslation();
-  const handleChange = (value: 'en' | 'zh') => {
-    const locale = value;
+  const t = useTranslations('LocaleSwitcher');
+  const locale = useLocale();
+
+  const handleChange = (value: Locale) => {
     startTransition(() => {
-      i18n.changeLanguage(locale);
+      const segments = pathname.split('/');
+      segments[1] = value; // 替换 locale 部分
+      router.replace(segments.join('/'));
     });
   };
 
@@ -35,7 +40,7 @@ export const LanguageSwitcher = () => {
       <PopoverTrigger asChild>
         <IconButton
           icon="prime:language"
-          variant={isPending ? 'ghost' : 'outline'}
+          variant="ghost"
           label="Switch language"
         />
       </PopoverTrigger>
@@ -43,16 +48,16 @@ export const LanguageSwitcher = () => {
         <Command>
           <CommandList>
             <CommandGroup>
-              {locales.map((lang) => (
+              {routing.locales.map((lang) => (
                 <CommandItem
-                  key={lang.code}
-                  value={lang.code}
-                  onSelect={() => handleChange(lang.code as 'en' | 'zh')}
+                  key={lang}
+                  value={lang}
+                  onSelect={() => handleChange(lang)}
                   disabled={isPending}
                   className="cursor-pointer justify-between"
                 >
-                  <span>{lang.name}</span>
-                  {i18n.language === lang.code && (
+                  <span>{t('locale', { locale: lang })}</span>
+                  {locale === lang && (
                     <CheckIcon className="mr-2 h-4 w-4" />
                   )}
                 </CommandItem>

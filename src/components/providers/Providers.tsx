@@ -2,22 +2,20 @@
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from 'next-themes';
 import { TrpcProvider } from './TrpcProvider';
-import { I18Provider } from './I18Provider';
+import { type Locale } from 'next-intl';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <TrpcProvider>
-      <I18Provider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
       >
         <Toaster position="top-center" />
-          {children}
-        </ThemeProvider>
-      </I18Provider>
+        {children}
+      </ThemeProvider>
     </TrpcProvider>
   );
 }
