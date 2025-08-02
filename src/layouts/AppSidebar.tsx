@@ -3,6 +3,7 @@
 import * as React from "react"
 import {
   IconDashboard,
+  IconInfoCircle,
   IconInnerShadowTop,
 } from "@tabler/icons-react"
 
@@ -22,13 +23,18 @@ const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "",
   },
   navMain: [
     {
-      title: "Dashboard",
-      url: "#",
+      title: "Home",
+      url: "/",
       icon: IconDashboard,
+    },
+    {
+      title: "Explore",
+      url: "/explore",
+      icon: IconInfoCircle,
     },
   ],
 }
